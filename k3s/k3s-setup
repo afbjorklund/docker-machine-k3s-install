@@ -1,0 +1,23 @@
+#!/bin/sh
+
+PARTNAME=sda1
+
+ln -s /mnt/$PARTNAME/home/docker/k3s /home/docker/kubectl
+ln -s /mnt/$PARTNAME/home/docker/.kube /home/docker/.kube
+ln -s /mnt/$PARTNAME/home/docker/k3s /home/docker/k3s
+ln -s /mnt/$PARTNAME/home/docker/.rancher /home/docker/.rancher
+
+ln -s /mnt/$PARTNAME/home/docker/k3s /usr/local/bin/kubectl
+ln -s /mnt/$PARTNAME/var/lib/kubelet /var/lib/kubelet
+ln -s /mnt/$PARTNAME/home/docker/k3s /usr/local/bin/k3s
+ln -s /mnt/$PARTNAME/var/lib/rancher /var/lib/rancher
+
+test -d /data || ln -s /mnt/$PARTNAME/data /data
+
+cp /mnt/$PARTNAME/tce/optional/* /tmp/tce/optional/
+
+echo '{ "cri-containerd": true }' > /etc/docker/daemon.json
+/etc/init.d/docker restart >/dev/null
+
+ln -s /mnt/$PARTNAME/home/docker/k3s /usr/local/bin/crictl
+echo 'runtime-endpoint: unix:///var/run/docker/containerd/containerd.sock' > /etc/crictl.yaml

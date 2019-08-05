@@ -1,0 +1,57 @@
+#!/bin/sh -e
+
+KUBE=`dirname $0`
+MACHINE=${1:-default}
+PARTNAME=sda1
+
+if [ "`docker-machine status $MACHINE`" != "Running" ]; then
+    echo "machine $MACHINE not running, please create or start it first" >&2
+    exit 1
+fi
+
+check_file()
+{
+if [ ! -e "$1" ]; then
+    echo "file $1 is missing, please use the k3s-download script" >&2
+    exit 1
+fi
+}
+
+check_file $KUBE/bin/k3s
+check_file $KUBE/tcz/socat.tcz
+
+echo "# Copying files to $MACHINE"
+docker-machine ssh $MACHINE sudo mkdir -p /mnt/$PARTNAME/home/docker
+  docker-machine ssh $MACHINE sudo chown docker:staff /mnt/$PARTNAME/home/docker
+  docker-machine ssh $MACHINE sudo chmod 2755 /mnt/$PARTNAME/home/docker
+docker-machine scp $KUBE/bin/k3s $MACHINE:/mnt/$PARTNAME/home/docker/
+
+docker-machine ssh $MACHINE mkdir -p /mnt/$PARTNAME/home/docker/.kube
+docker-machine ssh $MACHINE touch /mnt/$PARTNAME/home/docker/.kube/config
+
+docker-machine ssh $MACHINE mkdir -p /mnt/$PARTNAME/home/docker/.rancher
+docker-machine ssh $MACHINE sudo mkdir -p /mnt/$PARTNAME/var/lib/rancher
+
+docker-machine ssh $MACHINE sudo mkdir -p /mnt/$PARTNAME/tce
+  docker-machine ssh $MACHINE sudo chgrp staff /mnt/$PARTNAME/tce
+  docker-machine ssh $MACHINE sudo chmod 775 /mnt/$PARTNAME/tce
+docker-machine ssh $MACHINE mkdir -p /mnt/$PARTNAME/tce/optional
+
+# Supply the TCL package manager with the tcz packages we need
+for tcz in $KUBE/tcz/*; do docker-machine scp $tcz $MACHINE:/mnt/$PARTNAME/tce/optional/; done
+
+docker-machine ssh $MACHINE sudo mkdir -p /mnt/$PARTNAME/k3s
+  docker-machine ssh $MACHINE sudo chgrp staff /mnt/$PARTNAME/k3s
+  docker-machine ssh $MACHINE sudo chmod 775 /mnt/$PARTNAME/k3s
+docker-machine scp $KUBE/k3s/k3s-setup $MACHINE:/mnt/$PARTNAME/k3s/setup
+docker-machine scp $KUBE/k3s/k3s-start $MACHINE:/mnt/$PARTNAME/k3s/start
+
+# Add the setup and start scripts to the boot2docker bootlocal script, if not already present
+docker-machine ssh $MACHINE sudo /bin/sh -c "'grep k3s/setup /var/lib/boot2docker/bootlocal.sh >/dev/null 2>&1 || echo /mnt/$PARTNAME/k3s/setup >> /var/lib/boot2docker/bootlocal.sh'"
+docker-machine ssh $MACHINE sudo /bin/sh -c "'grep k3s/start /var/lib/boot2docker/bootlocal.sh >/dev/null 2>&1 || echo su docker -c /mnt/$PARTNAME/k3s/start >> /var/lib/boot2docker/bootlocal.sh'"
+
+echo "# Starting k3s in $MACHINE"
+docker-machine ssh $MACHINE sudo /bin/sh /mnt/$PARTNAME/k3s/setup
+docker-machine ssh $MACHINE /bin/sh /mnt/$PARTNAME/k3s/start
+
+exit 0

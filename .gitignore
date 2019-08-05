@@ -1,0 +1,3 @@
+bin/k3s
+bin/kubectl
+tcz/*.tcz
