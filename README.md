@@ -39,3 +39,13 @@ We then configure k3s and crictl to use the remote endpoint of this containerd:
 `unix:///var/run/docker/containerd/containerd.sock`
 
 See <https://github.com/containerd/containerd>
+
+### Flannel ###
+
+There is an embedded flannel with k3s, but for some reason it doesn't work.
+
+So we install the regular flannel CNI networking, using the kubeadm instructions:
+
+<https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network>
+
+See <https://github.com/coreos/flannel>
