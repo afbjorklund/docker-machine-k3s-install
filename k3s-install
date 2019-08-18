@@ -54,4 +54,3 @@ echo "# Starting k3s in $MACHINE"
 docker-machine ssh $MACHINE sudo /bin/sh /mnt/$PARTNAME/k3s/setup
 docker-machine ssh $MACHINE /bin/sh /mnt/$PARTNAME/k3s/start
 
-exit 0
