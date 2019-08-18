@@ -15,3 +15,6 @@ sleep 10
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846fefb68bd5f178daf4da3095ccb/Documentation/kube-flannel.yml
+
+# ugly hack for CNI
+sudo mkdir -p /opt/cni && sudo ln -s /var/lib/rancher/k3s/data/7e4ae4d231dc7a103d846978c8a1da9cf9353e95e5f2c4eda07c9650a1934f10/bin /opt/cni/bin
