@@ -8,7 +8,7 @@ curl -RLo bin/k3s https://github.com/rancher/k3s/releases/download/$K3S_VERSION/
 ln -sf k3s bin/kubectl
 
 # docker-machine ssh tce-load -w socat.tcz
-for tcz in openssl.tcz readline.tcz ncursesw.tcz socat.tcz; do
+for tcz in openssl.tcz readline.tcz ncursesw.tcz socat.tcz libmnl.tcz ipset.tcz; do
      curl -RLo tcz/$tcz http://repo.tinycorelinux.net/10.x/x86_64/tcz/$tcz; done
 
 sha256sum -c SHA256SUM.txt
