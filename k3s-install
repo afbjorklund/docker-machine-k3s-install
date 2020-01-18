@@ -29,6 +29,8 @@ docker-machine scp $KUBE/bin/k3s $MACHINE:/mnt/$PARTNAME/home/docker/
 docker-machine ssh $MACHINE mkdir -p /mnt/$PARTNAME/home/docker/.kube
 docker-machine ssh $MACHINE touch /mnt/$PARTNAME/home/docker/.kube/config
 
+docker-machine ssh $MACHINE sudo mkdir -p /mnt/$PARTNAME/var/lib/kubelet
+
 docker-machine ssh $MACHINE mkdir -p /mnt/$PARTNAME/home/docker/.rancher
 docker-machine ssh $MACHINE sudo mkdir -p /mnt/$PARTNAME/var/lib/rancher
 
