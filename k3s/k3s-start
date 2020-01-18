@@ -4,7 +4,7 @@ tce-load -i socat.tcz ipset.tcz
 
 sudo -E -b k3s server \
 	--container-runtime-endpoint unix:///var/run/docker/containerd/containerd.sock \
-        --no-deploy traefik --no-deploy servicelb --no-flannel \
+        --no-deploy traefik --no-deploy servicelb --no-flannel --disable-network-policy \
         --write-kubeconfig /home/docker/.kube/config \
 	--log /var/log/k3s.log
 
