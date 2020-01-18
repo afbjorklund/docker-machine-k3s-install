@@ -1,6 +1,6 @@
 #!/bin/sh
 
-tce-load -i socat.tcz
+tce-load -i socat.tcz ipset.tcz
 
 sudo -E -b k3s server \
 	--container-runtime-endpoint unix:///var/run/docker/containerd/containerd.sock \
