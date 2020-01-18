@@ -14,7 +14,7 @@ sudo chown docker:staff /home/docker/.kube/config
 sleep 10
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846fefb68bd5f178daf4da3095ccb/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml
 
 # ugly hack for CNI
-sudo mkdir -p /opt/cni && sudo ln -s /var/lib/rancher/k3s/data/7e4ae4d231dc7a103d846978c8a1da9cf9353e95e5f2c4eda07c9650a1934f10/bin /opt/cni/bin
+sudo mkdir -p /opt/cni && sudo ln -s /var/lib/rancher/k3s/data/c67259f824ace42864ead7655dbe15a5b736ad91050498224cd42f777416d8dd/bin /opt/cni/bin

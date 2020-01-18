@@ -1,6 +1,6 @@
 #!/bin/sh
 
-K3S_VERSION=v0.7.0
+K3S_VERSION=v1.17.0+k3s.1
 
 
 mkdir -p bin

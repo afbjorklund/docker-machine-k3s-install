@@ -2,7 +2,7 @@
 
 This sets up a single-node Kubernetes installation, using regular Boot2Docker ISO.
 
-Tested with k3s version: v0.7.0 featuring kubernetes version: v1.14.4
+Tested with k3s version: v1.17.0+k3s.1 featuring kubernetes version: v1.17.0
 
 Written by Anders Björklund (@afbjorklund)
 
